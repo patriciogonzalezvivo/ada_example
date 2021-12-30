@@ -1,0 +1,26 @@
+## Compile on Windows, MacOS, Linux (with X11)
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+## Compile for Linux with no X11 (console only)
+
+```bash
+mkdir build
+cd build
+cmake -DNO_X11 ..
+make
+```
+
+## Compile as WASM
+
+```bash
+mkdir build
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
+make
+```
