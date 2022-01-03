@@ -1,3 +1,3 @@
 [submodule "deps/ada"]
 	path = deps/ada
-	url = https://github.com/patriciogonzalezvivo/ada.git
+	url = git@github.com:patriciogonzalezvivo/ada.git
