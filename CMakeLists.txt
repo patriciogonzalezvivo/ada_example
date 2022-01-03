@@ -24,7 +24,7 @@ set_target_properties(hello_world PROPERTIES
 )
 
 # copy all files on assets on the build folder
-# file(COPY   assets/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(COPY   assets/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 
 if (EMSCRIPTEN)
 

@@ -11,6 +11,7 @@
 #include "ada/gl/mesh.h"
 #include "ada/gl/shader.h"
 #include "ada/tools/text.h"
+#include "ada/tools/font.h"
 #include "ada/tools/geom.h"
 
 const std::string vert = R"(
@@ -53,8 +54,9 @@ void main(void) {
 }
 )";
 
-ada::Vbo* billboard;
+ada::Vbo*   billboard;
 ada::Shader shader;
+ada::Font   font;
 
 #if defined(__EMSCRIPTEN__)
 EM_BOOL loop (double time, void* userData) {
@@ -67,8 +69,9 @@ void loop() {
 
     shader.setUniform("u_resolution", (float)ada::getWindowWidth(), (float)ada::getWindowHeight() );
     shader.setUniform("u_time", (float)ada::getTime());
-
     billboard->render( &shader );
+
+    font.render("Hello Word", ada::getWindowWidth() * 0.5, ada::getWindowHeight() * 0.5);
 
     ada::renderGL();
 
@@ -78,6 +81,11 @@ void loop() {
 }
 
 int main(int argc, char **argv) {
+
+    ada::WindowProperties window_properties;
+    window_properties.msaa = 4;
+    window_properties.major = 2.0;
+    window_properties.minor = 0.0;
 
     // Set the size and type of window
     glm::ivec4 window_viewport = glm::ivec4(0);
@@ -91,7 +99,6 @@ int main(int argc, char **argv) {
     window_viewport.w = screen.y;
     #endif
 
-    ada::WindowProperties window_properties;
     for (int i = 1; i < argc ; i++) {
         std::string argument = std::string(argv[i]);
 
@@ -128,21 +135,7 @@ int main(int argc, char **argv) {
                     std::string(argv[i]) == "--fullscreen" ) {
             window_properties.style = ada::FULLSCREEN;
         }
-        else if (   std::string(argv[i]) == "--msaa") {
-            window_properties.msaa = 4;
-        }
-        else if (   std::string(argv[i]) == "--major") {
-            if (++i < argc)
-                window_properties.major = ada::toInt(std::string(argv[i]));
-            else
-                std::cout << "Argument '" << argument << "' should be followed by a the OPENGL MAJOR version. Skipping argument." << std::endl;
-        }
-        else if (   std::string(argv[i]) == "--minor") {
-            if (++i < argc)
-                window_properties.minor = ada::toInt(std::string(argv[i]));
-            else
-                std::cout << "Argument '" << argument << "' should be followed by a the OPENGL MINOR version. Skipping argument." << std::endl;
-        }
+
     }
 
     // Initialize openGL context
@@ -150,6 +143,11 @@ int main(int argc, char **argv) {
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    font.load("new_media.ttf");
+    font.setAlign(ada::ALIGN_CENTER);
+    font.setSize(50);
+    font.setColor(0.0);
 
     billboard = ada::rect(0.0,0.0,1.0,1.0).getVbo();
     shader.load(frag, vert);
