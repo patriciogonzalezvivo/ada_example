@@ -10,6 +10,7 @@
 #include "ada/gl/gl.h"
 #include "ada/gl/mesh.h"
 #include "ada/gl/shader.h"
+#include "ada/tools/fs.h"
 #include "ada/tools/text.h"
 #include "ada/tools/font.h"
 #include "ada/tools/geom.h"
@@ -71,7 +72,9 @@ void loop() {
     shader.setUniform("u_time", (float)ada::getTime());
     billboard->render( &shader );
 
-    font.render("Hello Word", ada::getWindowWidth() * 0.5, ada::getWindowHeight() * 0.5);
+    font.render("ABCDEFJHIJKLMNOPKRSTUVWXYZ", ada::getWindowWidth() * 0.5, ada::getWindowHeight() * 0.43);
+    font.render("abcdefghijklmnopkrstuvwxyz", ada::getWindowWidth() * 0.5, ada::getWindowHeight() * 0.5);
+    font.render("012345679 _,:;-'\"!@#$%^&*()-=", ada::getWindowWidth() * 0.5, ada::getWindowHeight() * 0.57);
 
     ada::renderGL();
 
@@ -144,9 +147,8 @@ int main(int argc, char **argv) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    font.load("new_media.ttf");
     font.setAlign(ada::ALIGN_CENTER);
-    font.setSize(50);
+    font.setSize(28);
     font.setColor(0.0);
 
     billboard = ada::rect(0.0,0.0,1.0,1.0).getVbo();
