@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <iterator>
 
 #include "ada/window.h"
 #include "ada/gl/gl.h"
@@ -147,6 +149,7 @@ int main(int argc, char **argv) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // font.load("new_media.ttf");
     font.setAlign(ada::ALIGN_CENTER);
     font.setSize(28);
     font.setColor(0.0);
