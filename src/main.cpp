@@ -29,22 +29,6 @@ class myApp : public ada::App {
 
         billboard = ada::rect(0.0,0.0,1.0,1.0).getVbo();
 
-        const std::string vert = R"(
-        #ifdef GL_ES
-        precision mediump float;
-        #endif
-        attribute vec4 a_position;
-        attribute vec2 a_texcoord;
-        varying vec4 v_position;
-        varying vec2 v_texcoord;
-        void main(void) {
-            v_position =  a_position;
-            v_texcoord = a_texcoord;
-            
-            gl_Position = v_position;
-        }
-        )";
-
         const std::string frag = R"(
         #ifdef GL_ES
         precision mediump float;
@@ -53,21 +37,17 @@ class myApp : public ada::App {
         uniform vec2    u_resolution;
         uniform float   u_time;
 
-        varying vec2    v_texcoord;
-
         void main(void) {
             vec3 color = vec3(1.0);
             vec2 st = gl_FragCoord.xy/u_resolution.xy;
-            st = v_texcoord;
-            
+
             color = vec3(st.x,st.y,abs(sin(u_time)));
             
             gl_FragColor = vec4(color, 1.0);
         }
         )";
 
-        shader.load(frag, vert);
-        // shader.load(frag, ada::getDefaultSrc(ada::VERT_DEFAULT) );
+        shader.load(frag, ada::getDefaultSrc(ada::VERT_DEFAULT) );
         shader.use();
     }
 
@@ -76,6 +56,7 @@ class myApp : public ada::App {
         float height = ada::getWindowHeight();
         shader.setUniform("u_resolution", width, height );
         shader.setUniform("u_time", (float)ada::getTime());
+        shader.setUniform("u_modelViewProjectionMatrix", glm::mat4(1.0));
         billboard->render( &shader );
 
         font.render("ABCDEFJHIJKLMNOPKRSTUVWXYZ", width * 0.5, height * 0.43);
