@@ -5,10 +5,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_compile_options(-DGLM_FORCE_CXX14 -DGLM_FORCE_SWIZZLE -Wno-psabi)
+add_compile_options(-DGLM_FORCE_CXX14 -DGLM_FORCE_SWIZZLE -DEVENTS_AS_CALLBACKS -Wno-psabi)
 
 # The compiled ADA 
 add_subdirectory(deps)
+target_compile_definitions(ada PUBLIC EVENTS_AS_CALLBACKS)
 
 file(GLOB ROOT_SOURCE 
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
