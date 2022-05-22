@@ -5,7 +5,8 @@
 
 #include "ada/app.h"
 #include "ada/gl/gl.h"
-#include "ada/gl/mesh.h"
+#include "ada/gl/draw.h"
+#include "ada/gl/meshes.h"
 #include "ada/gl/shader.h"
 #include "ada/shaders/defaultShaders.h"
 #include "ada/tools/fs.h"
@@ -13,23 +14,19 @@
 #include "ada/tools/font.h"
 #include "ada/tools/geom.h"
 
-class myApp : public ada::App {
-    ada::Vbo*   billboard;
-    ada::Shader shader;
-    ada::Font   font;
+using namespace std;
+using namespace ada;
+using namespace glm;
+
+class myApp : public App {
+    Vbo*   billboard;
+    Shader shader;
 
     void setup() {
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
 
-        // font.load("new_media.ttf");
-        font.setAlign(ada::ALIGN_CENTER);
-        font.setSize(28);
-        font.setColor(0.0);
+        billboard = rectMesh(0.0,0.0,1.0,1.0).getVbo();
 
-        billboard = ada::rect(0.0,0.0,1.0,1.0).getVbo();
-
-        const std::string frag = R"(
+        string frag = R"(
         #ifdef GL_ES
         precision mediump float;
         #endif
@@ -47,21 +44,43 @@ class myApp : public ada::App {
         }
         )";
 
-        shader.load(frag, ada::getDefaultSrc(ada::VERT_DEFAULT) );
-        shader.use();
+        shader.load(frag, getDefaultSrc(VERT_DEFAULT) );
     }
 
     void draw() {
-        float width = ada::getWindowWidth();
-        float height = ada::getWindowHeight();
+        float width = getWindowWidth();
+        float height = getWindowHeight();
+        float time = getTime();
+
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        shader.use();
         shader.setUniform("u_resolution", width, height );
-        shader.setUniform("u_time", (float)ada::getTime());
-        shader.setUniform("u_modelViewProjectionMatrix", glm::mat4(1.0));
+        shader.setUniform("u_time", time);
+        shader.setUniform("u_modelViewProjectionMatrix", mat4(1.0f));
         billboard->render( &shader );
 
-        font.render("ABCDEFJHIJKLMNOPKRSTUVWXYZ", width * 0.5, height * 0.43);
-        font.render("abcdefghijklmnopkrstuvwxyz", width * 0.5, height * 0.5);
-        font.render("012345679 _,:;-'\"!@#$%^&*()-=", width * 0.5, height * 0.57);
+        fill( 0.0f );
+        textAlign(ALIGN_CENTER);
+        textSize(28.0f);
+        text("Hello World", width * 0.5f, height * 0.5f);
+
+        blendMode(ENABLE_ALPHA);
+
+        vector<vec2> pts;
+        for (size_t i = 0; i < 100; i++) 
+            pts.push_back(vec2( getWindowWidth() * ( 0.25f + i * 0.005f ), 
+                                        getWindowHeight() * ( 0.25f + cos( i * .031415f + time) * 0.125f ) ));
+
+        fill( 1.0f, 0.0f, 0.0f );
+        line(pts);
+        
+        stroke( 0.0f );
+        pointSize(10.0f);
+        pointShape(X_SHAPE);
+        simplify(pts);
+        points(pts);
     }
 
 };
@@ -70,18 +89,18 @@ myApp       app;
 
 int main(int argc, char **argv) {
     // Set the size and type of window
-    glm::ivec4 window_viewport = glm::ivec4(0);
+    ivec4 window_viewport = ivec4(0);
     window_viewport.z = 512;
     window_viewport.w = 512;
 
     #if defined(DRIVER_BROADCOM) || defined(DRIVER_GBM) 
     // RASPBERRYPI default windows size (fullscreen)
-    glm::ivec2 screen = ada::getScreenSize();
+    ivec2 screen = getScreenSize();
     window_viewport.z = screen.x;
     window_viewport.w = screen.y;
     #endif
 
-    ada::WindowProperties window_properties;
+    WindowProperties window_properties;
     window_properties.msaa = 4;
     window_properties.major = 2.0;
     window_properties.minor = 0.0;
