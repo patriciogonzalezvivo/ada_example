@@ -1,17 +1,9 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <iterator>
-
 #include "ada/app.h"
-#include "ada/gl/gl.h"
 #include "ada/gl/draw.h"
 #include "ada/gl/meshes.h"
 #include "ada/gl/shader.h"
 #include "ada/shaders/defaultShaders.h"
-#include "ada/tools/fs.h"
 #include "ada/tools/text.h"
-#include "ada/tools/font.h"
 #include "ada/tools/geom.h"
 
 using namespace std;
@@ -45,6 +37,8 @@ class myApp : public App {
         )";
 
         shader.load(frag, getDefaultSrc(VERT_DEFAULT) );
+
+        blendMode(BLEND_ALPHA);
     }
 
     void draw() {
@@ -64,22 +58,25 @@ class myApp : public App {
         textAlign(ALIGN_CENTER);
         textSize(28.0f);
         text("Hello World", width * 0.5f, height * 0.5f);
-
-        blendMode(ENABLE_ALPHA);
-
+        
         vector<vec2> pts;
         for (size_t i = 0; i < 100; i++) 
             pts.push_back(vec2( getWindowWidth() * ( 0.25f + i * 0.005f ), 
-                                        getWindowHeight() * ( 0.25f + cos( i * .031415f + time) * 0.125f ) ));
+                                getWindowHeight() * ( 0.25f + cos( i * .031415f + time) * 0.125f ) ));
 
-        fill( 1.0f, 0.0f, 0.0f );
+        noStroke();
+        fill( 0.0f );
+        rect(pts[0], vec2(20.0f) );
+
+        stroke( 0.0f );
         line(pts);
         
-        stroke( 0.0f );
+        fill( 1.0f );
         pointSize(10.0f);
         pointShape(X_SHAPE);
         simplify(pts);
         points(pts);
+
     }
 
 };
