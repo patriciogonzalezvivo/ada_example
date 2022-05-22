@@ -52,8 +52,7 @@ class myApp : public App {
         float height = getWindowHeight();
         float time = getTime();
 
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        clear(0.0f);
 
         shader.use();
         shader.setUniform("u_resolution", width, height );
