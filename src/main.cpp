@@ -1,10 +1,7 @@
 #include "ada/app.h"
-#include "ada/gl/draw.h"
-#include "ada/gl/meshes.h"
-#include "ada/gl/shader.h"
-#include "ada/shaders/defaultShaders.h"
-#include "ada/tools/text.h"
-#include "ada/tools/geom.h"
+#include "ada/geom/meshes.h"
+#include "ada/geom/ops.h"
+#include "ada/string.h"
 
 using namespace std;
 using namespace ada;
@@ -16,7 +13,7 @@ class myApp : public App {
 
     void setup() {
 
-        billboard = rectMesh(0.0,0.0,1.0,1.0).getVbo();
+        billboard = new Vbo( rectMesh(0.0,0.0,1.0,1.0) );
 
         string frag = R"(
         #ifdef GL_ES
