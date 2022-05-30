@@ -8,12 +8,13 @@ using namespace ada;
 using namespace glm;
 
 class myApp : public App {
-    Vbo*   billboard;
-    Shader shader;
+    Vbo     myBillboard;
+    Shader  myShader;
 
     void setup() {
+        background(0.0f);
 
-        billboard = new Vbo( rectMesh(0.0,0.0,1.0,1.0) );
+        myBillboard = rectMesh(0.0,0.0,width, height);
 
         string frag = R"(
         #ifdef GL_ES
@@ -33,23 +34,13 @@ class myApp : public App {
         }
         )";
 
-        shader.load(frag, getDefaultSrc(VERT_DEFAULT) );
-
+        myShader = createShader(frag);
         blendMode(BLEND_ALPHA);
     }
 
     void draw() {
-        float width = getWindowWidth();
-        float height = getWindowHeight();
-        float time = getTime();
-
-        clear(0.0f);
-
-        shader.use();
-        shader.setUniform("u_resolution", width, height );
-        shader.setUniform("u_time", time);
-        shader.setUniform("u_modelViewProjectionMatrix", mat4(1.0f));
-        billboard->render( &shader );
+        shader( myShader );
+        model( myBillboard );
 
         fill( 0.0f );
         textAlign(ALIGN_CENTER);
