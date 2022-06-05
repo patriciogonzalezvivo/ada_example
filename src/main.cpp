@@ -34,6 +34,8 @@ class myApp : public App {
         }
         )";
 
+        loadFont("new_media.ttf", "new media");
+
         myShader = createShader(frag);
         blendMode(BLEND_ALPHA);
     }
@@ -43,6 +45,10 @@ class myApp : public App {
         model( myBillboard );
 
         fill( 0.0f );
+        if (second() < 30)
+            textFont("new media");
+        else
+            textFont("default");
         textAlign(ALIGN_CENTER);
         textSize(28.0f);
         text("Hello World", width * 0.5f, height * 0.5f);
@@ -50,7 +56,7 @@ class myApp : public App {
         vector<vec2> pts;
         for (size_t i = 0; i < 100; i++) 
             pts.push_back(vec2( getWindowWidth() * ( 0.25f + i * 0.005f ), 
-                                getWindowHeight() * ( 0.25f + cos( i * .031415f + time) * 0.125f ) ));
+                                getWindowHeight() * ( 0.75f + cos( i * .031415f + time) * 0.125f ) ));
 
         noStroke();
         fill( 0.0f );
