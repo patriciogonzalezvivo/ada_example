@@ -87,7 +87,7 @@ cd ..
 ### For windows managers like MacOS, Windows or Linux (with X11 Window Manager) (all through GLFW) 
 
 ```bash
-git clone https://github.com/patriciogonzalezvivo/ada_example.git
+git clone --recursive https://github.com/patriciogonzalezvivo/ada_example.git
 cd ada_test
 mkdir build
 cd build
@@ -99,7 +99,7 @@ make
 ### For Linux with no X11 Window Manager
 
 ```bash
-git clone https://github.com/patriciogonzalezvivo/ada_example.git
+git clone --recursive https://github.com/patriciogonzalezvivo/ada_example.git
 cd ada_test
 mkdir build
 cd build
@@ -111,7 +111,7 @@ make
 ### As a Emscripten WebAssembly project
 
 ```bash
-git clone https://github.com/patriciogonzalezvivo/ada_example.git
+git clone --recursive https://github.com/patriciogonzalezvivo/ada_example.git
 cd ada_test
 mkdir build
 cd build
