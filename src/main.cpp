@@ -78,25 +78,6 @@ class myApp : public App {
 myApp       app;
 
 int main(int argc, char **argv) {
-    // Set the size and type of window
-    ivec4 window_viewport = ivec4(0);
-    window_viewport.z = 512;
-    window_viewport.w = 512;
-
-    #if defined(DRIVER_BROADCOM) || defined(DRIVER_GBM) 
-    // RASPBERRYPI default windows size (fullscreen)
-    ivec2 screen = getScreenSize();
-    window_viewport.z = screen.x;
-    window_viewport.w = screen.y;
-    #endif
-
-    WindowProperties window_properties;
-    window_properties.msaa = 4;
-    window_properties.major = 2.0;
-    window_properties.minor = 0.0;
-
-    // Initialize openGL context
-    app.run(window_viewport);
-
+    app.run();
     return 1;
 }
